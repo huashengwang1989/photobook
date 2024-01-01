@@ -1,6 +1,10 @@
 {
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.defaultFormatter": "dbaeumer.vscode-eslint",
   "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "eslint": true,
+    "source.fixAll": true
+  },
   "editor.tabSize": 2,
   "editor.quickSuggestions": {
     "strings": "on"
@@ -10,15 +14,7 @@
   },
   "files.autoSave": "afterDelay",
   "javascript.format.enable": true,
-  "prettier.arrowParens": "always",
   "prettier.configPath": "prettier.config.js",
-  "prettier.enable": true,
-  "prettier.jsxSingleQuote": false,
-  "prettier.printWidth": 80,
-  "prettier.requireConfig": true,
-  "prettier.semi": true,
-  "prettier.singleQuote": true,
-  "prettier.trailingComma": "all",
-  "prettier.useEditorConfig": false,
+  "prettier.enable": false,
   "typescript.format.enable": true
 }

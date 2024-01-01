@@ -15,6 +15,7 @@ module.exports = {
   },
   plugins: ['react-refresh', 'prettier'],
   rules: {
+    'comma-dangle': 0,
     indent: ['warn', 2],
     'prettier/prettier': [
       'warn',
@@ -23,10 +24,25 @@ module.exports = {
         parser: 'flow',
       },
     ],
-    '@typescript-eslint/no-non-null-assertion': 'off',
     'react-refresh/only-export-components': [
       'warn',
       { allowConstantExport: true },
+    ],
+    '@typescript-eslint/comma-dangle': 0,
+    '@typescript-eslint/no-non-null-assertion': 'off',
+    '@typescript-eslint/member-delimiter-style': [
+      'warn',
+      {
+        multiline: {
+          delimiter: 'comma',
+          requireLast: true,
+        },
+        singleline: {
+          delimiter: 'comma',
+          requireLast: false,
+        },
+        multilineDetection: 'brackets',
+      },
     ],
   },
 };

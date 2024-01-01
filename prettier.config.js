@@ -1,5 +1,11 @@
-export default {
+/**
+ * @type {import('prettier').Config & {
+ *   tailwindFunctions: string[];
+ * }}
+ */
+const config = {
   arrowParens: 'always',
+  endOfLine: 'lf',
   jsxSingleQuote: false,
   plugins: ['prettier-plugin-jsdoc', 'prettier-plugin-tailwindcss'],
   printWidth: 80,
@@ -9,3 +15,5 @@ export default {
   tailwindFunctions: ['clsx'],
   trailingComma: 'all',
 };
+
+export default config;
