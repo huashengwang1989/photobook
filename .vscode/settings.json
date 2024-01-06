@@ -1,10 +1,6 @@
 {
   "editor.defaultFormatter": "dbaeumer.vscode-eslint",
   "editor.formatOnSave": true,
-  "editor.codeActionsOnSave": {
-    "eslint": true,
-    "source.fixAll": true
-  },
   "editor.tabSize": 2,
   "editor.quickSuggestions": {
     "strings": "on"
@@ -15,6 +11,6 @@
   "files.autoSave": "afterDelay",
   "javascript.format.enable": true,
   "prettier.configPath": "prettier.config.js",
-  "prettier.enable": false,
+  "prettier.enable": true,
   "typescript.format.enable": true
 }

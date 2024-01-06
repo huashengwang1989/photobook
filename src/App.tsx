@@ -1,16 +1,29 @@
 import Header from './partials/Header';
+import { useCanvasMulti } from './partials/CanvasMulti';
+import { CanvasToImageExportOptions } from './partials/canvasCommon/types';
 
 import './App.css';
 
+const exportOptions: CanvasToImageExportOptions = {
+  isToExport: false,
+  inclBleedingArea: true,
+  inclBleedingMarks: true,
+  targetDpi: 300,
+  exportFormat: 'jpg',
+};
+
 function App() {
+  const { CanvasMultiRendered } = useCanvasMulti({
+    exportOptions,
+  });
   return (
     <div className="bg-white text-slate-500 antialiased dark:bg-slate-900 dark:text-slate-400">
       <Header />
       <div>
-        <div className="max-w-8xl mx-auto px-4 sm:px-6 md:px-8">
-          <div className="fixed inset-0 left-[max(0px,calc(50%-45rem))] right-auto top-[3.8125rem] z-20 hidden w-[19rem] overflow-y-auto pb-10 pl-8 pr-6 lg:block">
-            Side
-          </div>
+        <div className="min-h-lvh bg-slate-500 dark:bg-slate-700">
+          <main className="relative mx-auto flex max-w-3xl pt-10 xl:max-w-none">
+            {CanvasMultiRendered}
+          </main>
         </div>
       </div>
     </div>

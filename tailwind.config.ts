@@ -3,12 +3,10 @@ export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   darkMode: 'class',
   theme: {
-    /*
     fontFamily: {
-      sans: ['Graphik', 'sans-serif'],
-      serif: ['Merriweather', 'serif'],
+      sans: ['Gill Sans', 'PingFang SC', 'sans-serif'],
+      serif: ['Baskerville', 'Songti SC', 'serif'],
     },
-    */
     extend: {},
   },
   plugins: [],

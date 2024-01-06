@@ -8,6 +8,11 @@ module.exports = {
     'prettier',
   ],
   ignorePatterns: ['dist', '.eslintrc.cjs'],
+  settings: {
+    'import/resolver': {
+      typescript: {},
+    },
+  },
   parser: '@typescript-eslint/parser',
   parserOptions: {
     project: ['./tsconfig.json'],
@@ -15,8 +20,8 @@ module.exports = {
   },
   plugins: ['react-refresh', 'prettier'],
   rules: {
-    'comma-dangle': 0,
-    indent: ['warn', 2],
+    'comma-dangle': 'off', // Use typescript-eslint
+    indent: ['warn', 2], // Use typescript-eslint
     'prettier/prettier': [
       'warn',
       {
@@ -28,7 +33,7 @@ module.exports = {
       'warn',
       { allowConstantExport: true },
     ],
-    '@typescript-eslint/comma-dangle': 0,
+    '@typescript-eslint/comma-dangle': ['warn', 'always-multiline'],
     '@typescript-eslint/no-non-null-assertion': 'off',
     '@typescript-eslint/member-delimiter-style': [
       'warn',
