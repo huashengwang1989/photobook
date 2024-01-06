@@ -1,3 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Fix html2canvas element shift place issue */
+@layer base {
+  img {
+    @apply inline-block;
+  }
+}

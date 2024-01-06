@@ -221,16 +221,13 @@ const CalendarCanvas: FC<Props> = (props) => {
 
   const renderMonthCalGridCellLabels = useCallback((cell: DateCell) => {
     const isSingleLabel = Boolean(cell.label) !== Boolean(cell.subLabel);
-    const commonCls = clsx(
-      'text-left font-sans font-semibold tracking-tighter',
-      {
-        'text-lime-600': cell.isHoliday,
-        'text-amber-600': cell.isTraditionalDay && !cell.isHoliday,
-        'text-cyan-600':
-          cell.isSchoolEvent && !cell.isHoliday && !cell.isTraditionalDay,
-        'mt-1': isSingleLabel, // Minor adjust position for better visual
-      },
-    );
+    const commonCls = clsx('font-condensedSans text-left font-semibold', {
+      'text-lime-600': cell.isHoliday,
+      'text-amber-600': cell.isTraditionalDay && !cell.isHoliday,
+      'text-cyan-600':
+        cell.isSchoolEvent && !cell.isHoliday && !cell.isTraditionalDay,
+      'mt-1': isSingleLabel, // Minor adjust position for better visual
+    });
     const MainLabel = (
       <div className={clsx(commonCls, 'text-xs')}>{cell.label}</div>
     );
