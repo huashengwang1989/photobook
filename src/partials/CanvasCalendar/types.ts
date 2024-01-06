@@ -13,7 +13,15 @@ type NoPhotoReason =
   | 'sick'
   | 'holiday'
   | 'travel'
-  | 'empty';
+  | 'school'
+  | 'school-event'
+  | 'school-close'
+  | 'empty'
+  | 'christmas'
+  | 'birthday'
+  | 'graduation'
+  | 'celebrate'
+  | 'poll';
 
 type SpecialDayConfig = {
   label?: string,

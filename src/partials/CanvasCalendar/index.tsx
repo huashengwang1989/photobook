@@ -1,15 +1,17 @@
 import { useCallback, useMemo, type FC } from 'react';
 import clsx from 'clsx';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Image from '@/components/Image';
 import { useFetch } from '@/utils/hooks/useFetch';
 import { dd } from '@/utils/num/dd';
 import { weeksWithSunStart, weeksWithMonStart } from '@/utils/week/list';
 import { getWeek, getWeekYear } from '@/utils/week/basic';
 import { names as weekNames } from '@/utils/week/names';
 import { names as monthNames } from '@/utils/month/names';
-import Image from '@/components/Image';
 
 import { useCanvasBaseAndDim } from '../canvasBaseAndDim';
 import { useImageFileSrcCommon } from '../canvasCommon';
+import { noPhotoPlaceholders } from './constants';
 
 import type { WeekDay, SpecialDayConfig, Props, DateCell } from './types';
 
@@ -251,6 +253,9 @@ const CalendarCanvas: FC<Props> = (props) => {
   const renderMonthCalGridCell = useCallback(
     (cell: DateCell, isNoPhotoRow: boolean) => {
       const images = photoFileDataByYyyyMmdd[cell.yyyyMmDd] || [];
+      const plIcon = cell.noPhotoReason
+        ? noPhotoPlaceholders[cell.noPhotoReason]
+        : undefined;
       return (
         <td
           key={cell.key}
@@ -263,7 +268,7 @@ const CalendarCanvas: FC<Props> = (props) => {
             {renderMonthCalGridCellDate(cell)}
             {renderMonthCalGridCellLabels(cell)}
           </div>
-          <div className={'flex'}>
+          <div className={'flex justify-evenly'}>
             {images.map((img) => {
               return (
                 <div key={img.meta.type} className={'m-[1px] h-auto w-[48%]'}>
@@ -271,6 +276,12 @@ const CalendarCanvas: FC<Props> = (props) => {
                 </div>
               );
             })}
+            {!images.length && plIcon && (
+              <FontAwesomeIcon
+                className={'text-4xl text-slate-200'}
+                icon={plIcon}
+              />
+            )}
           </div>
         </td>
       );
@@ -286,9 +297,10 @@ const CalendarCanvas: FC<Props> = (props) => {
     () =>
       monthCalendarGridData.map((row) => {
         const weekNo = row[0].weekNo;
-        const isNoPhotoRow = !row.find(
-          (cell) => photoFileDataByYyyyMmdd[cell.yyyyMmDd]?.length,
-        );
+        const isNoPhotoRow = !row.find((cell) => {
+          const photos = photoFileDataByYyyyMmdd[cell.yyyyMmDd];
+          return photos?.length || cell.noPhotoReason;
+        });
         return (
           <tr key={weekNo}>
             <th

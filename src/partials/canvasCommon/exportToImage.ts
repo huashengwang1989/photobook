@@ -71,9 +71,31 @@ async function exportCanvasToImage(
   if (!dataUrl) {
     throw new Error('no-data-url');
   }
-  const suggestedFilename = `${type}-${id}.${exportOptions.exportFormat}`;
+  const suggestedFilenameBase = `${type}-${id}`;
+
+  const filenameAppend = (() => {
+    const { inclBleedingMarks, inclBleedingArea, targetDpi } = exportOptions;
+    if (!inclBleedingArea && targetDpi === 300) {
+      return;
+    }
+    return [
+      targetDpi,
+      inclBleedingArea ? 'b' : '',
+      inclBleedingMarks ? 'm' : '',
+    ]
+      .filter((s) => s)
+      .join('_');
+  })();
+
+  const suggestedFilename = filenameAppend
+    ? `${suggestedFilenameBase}_${filenameAppend}`
+    : suggestedFilenameBase;
+
   try {
-    const res = await saveImage(dataUrl, suggestedFilename);
+    const res = await saveImage(
+      dataUrl,
+      `${suggestedFilename}.${exportOptions.exportFormat}`,
+    );
     exportEndCallback(undefined, dataUrl);
     return res;
   } catch (error) {

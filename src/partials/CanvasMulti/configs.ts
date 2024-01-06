@@ -21,6 +21,7 @@ const specialDaysByYyyyMmDd: Partial<Record<string, SpecialDayConfig>> = {
     label: 'Vesak Day',
     subLabel: '卫塞节',
     isHoliday: true,
+    noPhotoReason: 'holiday',
   },
   20230612: {
     label: '🏥 Clinic',
@@ -40,15 +41,18 @@ const specialDaysByYyyyMmDd: Partial<Record<string, SpecialDayConfig>> = {
     label: 'Hari Raya Haji',
     subLabel: '哈芝节',
     isHoliday: true,
+    noPhotoReason: 'holiday',
   },
   // 2023-07
   20230712: {
     label: '🏥 Clinic',
     subLabel: 'NUH',
+    noPhotoReason: 'doctor',
   },
   20230731: {
     label: 'Immunization',
     subLabel: '💉 Clementi PC',
+    noPhotoReason: 'immunization',
   },
   // 2023-08
   20230808: {
@@ -56,9 +60,10 @@ const specialDaysByYyyyMmDd: Partial<Record<string, SpecialDayConfig>> = {
     isTraditionalDay: true,
   },
   20230809: {
-    label: 'National Day',
+    label: '🇸🇬 National Day',
     subLabel: '国庆',
     isHoliday: true,
+    noPhotoReason: 'celebrate',
   },
   20230822: {
     label: '七夕',
@@ -73,20 +78,26 @@ const specialDaysByYyyyMmDd: Partial<Record<string, SpecialDayConfig>> = {
     label: 'Election Day',
     subLabel: '选举日',
     isHoliday: true,
+    noPhotoReason: 'poll',
   },
   20230904: {
     label: "Teachers' Day In-lieu",
     subLabel: '教师节学校补假',
     isSchoolEvent: true,
+    noPhotoReason: 'school',
   },
   20230911: {
     label: "Teachers' Day",
     subLabel: '教师节',
     isSchoolEvent: true,
+    noPhotoReason: 'school',
   },
   20230923: {
     label: '秋分',
     isTraditionalDay: true,
+  },
+  20230926: {
+    noPhotoReason: 'sick',
   },
   20230929: {
     label: '中秋',
@@ -110,11 +121,13 @@ const specialDaysByYyyyMmDd: Partial<Record<string, SpecialDayConfig>> = {
     label: 'Centre Closure',
     subLabel: '中心关闭',
     isSchoolEvent: true,
+    noPhotoReason: 'school-close',
   },
   // 2023-11
   20231106: {
     label: '🏥 A&E',
     subLabel: 'Clementi PC, NUH',
+    noPhotoReason: 'sick',
   },
   20231108: {
     label: '立冬',
@@ -129,10 +142,21 @@ const specialDaysByYyyyMmDd: Partial<Record<string, SpecialDayConfig>> = {
     label: 'Deepavali In-lieu',
     subLabel: '屠妖节补假',
     isHoliday: true,
+    noPhotoReason: 'holiday',
   },
   20231121: {
     label: '🏥 A&E',
     subLabel: 'Clementi PC, NUH',
+    noPhotoReason: 'sick',
+  },
+  20231122: {
+    noPhotoReason: 'sick',
+  },
+  20231123: {
+    noPhotoReason: 'sick',
+  },
+  20231124: {
+    noPhotoReason: 'sick',
   },
   // 2023-12
   20231206: {
@@ -143,6 +167,10 @@ const specialDaysByYyyyMmDd: Partial<Record<string, SpecialDayConfig>> = {
     label: 'Centre Spring Cleaning',
     subLabel: '中心大扫除',
     isSchoolEvent: true,
+    noPhotoReason: 'school-event',
+  },
+  20231219: {
+    noPhotoReason: 'sick',
   },
   20231222: {
     label: '冬至',
@@ -152,6 +180,7 @@ const specialDaysByYyyyMmDd: Partial<Record<string, SpecialDayConfig>> = {
     label: 'Christmas',
     subLabel: '圣诞节',
     isHoliday: true,
+    noPhotoReason: 'christmas',
   },
 };
 
