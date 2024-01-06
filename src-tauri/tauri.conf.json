@@ -50,7 +50,7 @@
         "icons/icon.icns",
         "icons/icon.ico"
       ],
-      "identifier": "com.tauri.dev",
+      "identifier": "com.huashengwang1989.photobookmaker",
       "longDescription": "",
       "macOS": {
         "entitlements": null,
