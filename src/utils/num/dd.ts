@@ -1,4 +1,8 @@
-const dd = (num: number) => {
+const dd = (number: number | string | undefined | null) => {
+  if (typeof number !== 'number' && (typeof number !== 'string' || !number)) {
+    return '';
+  }
+  const num = Number(number);
   if (Number.isNaN(num)) {
     return '';
   }

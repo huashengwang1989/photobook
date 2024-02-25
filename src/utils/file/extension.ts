@@ -1,3 +1,4 @@
+/** Always to lower case */
 const getExtensionFromSrc = (src: string) => {
   if (!src || !src.includes('.')) {
     return '';

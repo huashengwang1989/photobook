@@ -59,6 +59,8 @@ type Props = CommonPropsForImageFiles &
     specialDaysByYyyyMmDd?: Partial<Record<string, SpecialDayConfig>>,
     exportUniqueId: string,
     exportOptions: CanvasToImageExportOptions,
+    onCanvasIdsUpdate?: (ids: string[]) => void,
+    onCanvasExportHandlersUpdate?: (exports: (() => void)[]) => void,
   };
 
 export type {

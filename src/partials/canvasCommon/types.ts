@@ -2,6 +2,7 @@ import type { FileEntry } from '@tauri-apps/api/fs';
 
 type CommonPropsForImageFiles = {
   folderSrc: string,
+  preventRecursiveCheck?: boolean,
   checkFileApplicability?: (file: FileEntry) => boolean,
   supportedExtensions?: string[],
 };
@@ -27,9 +28,10 @@ type CommonPropsForCanvasSize = {
   contentPaddingCm: number,
 };
 
+/** Return undefined if invalid */
 type CustomMetaGeneration<Meta extends Record<string, unknown>> = (
   file: Record<'path' | 'name', string>,
-) => Meta;
+) => Meta | undefined;
 
 type FileEntryWithMeta<Meta extends Record<string, unknown>> = {
   path: string,
@@ -45,7 +47,7 @@ type CanvasToImageExportOptions = {
    * Some styles will be off when it is to export, e.g. shadows., and square to
    * mark the boundary.
    */
-  isToExport: boolean,
+  exportingCanvasIds: string[],
   inclBleedingArea: boolean,
   /** Only applicable wieh inclBleedingArea is true */
   inclBleedingMarks: boolean,

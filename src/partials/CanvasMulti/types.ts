@@ -1,13 +1,27 @@
 import type {
-  ImageFileToDateInfo,
+  ImageFileToDateInfo as ImageFileToDataInfoForCal,
   SpecialDayConfig,
   Props as CanvasCalProps,
 } from '../CanvasCalendar/types';
-import type { CanvasToImageExportOptions } from '../canvasCommon/types';
+
+import type {
+  ImageFileToDateInfo as ImageFileToDataInfoForActivity,
+  Props as CanvasActivityProps,
+} from '../CanvasActivity/types';
+
+import type {
+  FileEntry,
+  CanvasToImageExportOptions,
+  CommonPropsForCanvasSize,
+} from '../canvasCommon/types';
 
 export type {
-  ImageFileToDateInfo,
+  ImageFileToDataInfoForCal,
   SpecialDayConfig,
   CanvasCalProps,
+  ImageFileToDataInfoForActivity,
+  CanvasActivityProps,
+  FileEntry,
+  CommonPropsForCanvasSize,
   CanvasToImageExportOptions,
 };

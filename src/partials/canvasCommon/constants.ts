@@ -6,4 +6,6 @@ const commonClasses = {
   BLEEDING_MARK_ASSIST_SQUARE_CLS: 'bleeding-marks-assist-square',
 };
 
-export { commonClasses };
+const commonIgnoreFileExtensions = ['DS_Store', 'ini'];
+
+export { commonClasses, commonIgnoreFileExtensions };

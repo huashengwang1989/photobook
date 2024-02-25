@@ -1,24 +1,32 @@
+import { useMemo } from 'react';
 import Header from './partials/Header';
 import { useCanvasMulti } from './partials/CanvasMulti';
-import { CanvasToImageExportOptions } from './partials/canvasCommon/types';
+import type { CanvasToImageExportOptions } from './partials/canvasCommon/types';
 
 import './App.css';
 
 const exportOptions: CanvasToImageExportOptions = {
-  isToExport: false,
+  exportingCanvasIds: [],
   inclBleedingArea: true,
-  inclBleedingMarks: true,
+  inclBleedingMarks: false,
   targetDpi: 300,
   exportFormat: 'jpg',
 };
 
 function App() {
-  const { CanvasMultiRendered } = useCanvasMulti({
-    exportOptions,
-  });
+  const { CanvasMultiRendered, calendarCanvasIds, activityCanvasIds } =
+    useCanvasMulti({
+      exportOptions,
+    });
+
+  const allCanvasIds = useMemo(
+    () => [...calendarCanvasIds, ...activityCanvasIds],
+    [activityCanvasIds, calendarCanvasIds],
+  );
+
   return (
     <div className="bg-white text-slate-500 antialiased dark:bg-slate-900 dark:text-slate-400">
-      <Header />
+      <Header allCanvasIds={allCanvasIds} exportOptions={exportOptions} />
       <div>
         <div className="min-h-lvh bg-slate-500 dark:bg-slate-700">
           <main className="relative mx-auto flex max-w-3xl pt-10 xl:max-w-none">

@@ -12,7 +12,7 @@
  * Returns the ISO week of the date: Thursday in current week decides the year;
  * January 4 is always in week 1
  */
-const getWeek = (d: Date) => {
+const getWeekNumber = (d: Date) => {
   const date = new Date(d.getTime());
   date.setHours(0, 0, 0, 0);
   // Thursday in current week decides the year.
@@ -38,4 +38,4 @@ const getWeekYear = (d: Date) => {
   return date.getFullYear();
 };
 
-export { getWeek, getWeekYear };
+export { getWeekNumber, getWeekYear };

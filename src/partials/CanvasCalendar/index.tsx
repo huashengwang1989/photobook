@@ -1,11 +1,11 @@
-import { useCallback, useMemo, type FC } from 'react';
+import { useCallback, useMemo, type FC, useEffect } from 'react';
 import clsx from 'clsx';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Image from '@/components/Image';
 import { useFetch } from '@/utils/hooks/useFetch';
 import { dd } from '@/utils/num/dd';
 import { weeksWithSunStart, weeksWithMonStart } from '@/utils/week/list';
-import { getWeek, getWeekYear } from '@/utils/week/basic';
+import { getWeekNumber, getWeekYear } from '@/utils/week/basic';
 import { names as weekNames } from '@/utils/week/names';
 import { names as monthNames } from '@/utils/month/names';
 
@@ -14,8 +14,6 @@ import { useImageFileSrcCommon } from '../canvasCommon';
 import { noPhotoPlaceholders } from './constants';
 
 import type { WeekDay, SpecialDayConfig, Props, DateCell } from './types';
-
-import './styles.css';
 
 const CalendarCanvas: FC<Props> = (props) => {
   const {
@@ -34,6 +32,9 @@ const CalendarCanvas: FC<Props> = (props) => {
     // Export
     exportOptions,
     exportUniqueId,
+    // ID and Export Sync
+    onCanvasIdsUpdate,
+    onCanvasExportHandlersUpdate,
   } = props;
 
   const { getAllApplicableFilesInFolder } = useImageFileSrcCommon({
@@ -94,7 +95,7 @@ const CalendarCanvas: FC<Props> = (props) => {
 
     const firstDay = firstD.getDay() as WeekDay; // Week
     const firstDayIndex = weeks.indexOf(firstDay);
-    const firstDayWeekNo = getWeek(firstD);
+    const firstDayWeekNo = getWeekNumber(firstD);
     const firstDayWeekYear = getWeekYear(firstD);
 
     const preFirstDayEmptyCellCount = firstDayIndex < 0 ? 0 : firstDayIndex;
@@ -223,7 +224,7 @@ const CalendarCanvas: FC<Props> = (props) => {
 
   const renderMonthCalGridCellLabels = useCallback((cell: DateCell) => {
     const isSingleLabel = Boolean(cell.label) !== Boolean(cell.subLabel);
-    const commonCls = clsx('font-condensedSans text-left font-semibold', {
+    const commonCls = clsx('text-left font-condensedSans font-semibold', {
       'text-lime-600': cell.isHoliday,
       'text-amber-600': cell.isTraditionalDay && !cell.isHoliday,
       'text-cyan-600':
@@ -319,7 +320,7 @@ const CalendarCanvas: FC<Props> = (props) => {
 
   const CalendarMonthHeader = useMemo(() => {
     return (
-      <h3 className="calendar-header flex">
+      <h3 className="calendar-header flex items-baseline">
         <div className="font-serif text-6xl font-semibold text-lime-700">
           {monthNames.en.full[month]}
         </div>
@@ -393,7 +394,20 @@ const CalendarCanvas: FC<Props> = (props) => {
     TableHeaderWeekNames,
   ]);
 
-  return renderCanvas({ children: CanvasContent });
+  const { canvas, canvasId, exportCanvas } = useMemo(
+    () => renderCanvas({ children: CanvasContent }),
+    [CanvasContent, renderCanvas],
+  );
+
+  useEffect(() => {
+    onCanvasIdsUpdate?.(canvasId ? [canvasId] : []);
+  }, [canvasId, onCanvasIdsUpdate]);
+
+  useEffect(() => {
+    onCanvasExportHandlersUpdate?.([exportCanvas]);
+  }, [exportCanvas, onCanvasExportHandlersUpdate]);
+
+  return canvas;
 };
 
 export default CalendarCanvas;

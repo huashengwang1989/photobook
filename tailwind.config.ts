@@ -7,6 +7,7 @@ export default {
       sans: ['Gill Sans', 'PingFang SC', 'sans-serif'],
       serif: ['Baskerville', 'Songti SC', 'serif'],
       condensedSans: ['DIN Condensed', 'PingFang SC', 'sans-serif'],
+      activitySans: ['Helvetica Neue', 'PingFang SC', 'sans-serif'],
     },
     extend: {},
   },

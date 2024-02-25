@@ -14,11 +14,15 @@ function useCanvasBaseAndDim(props: Props) {
     canvasDimensionCm,
     bleedingCm,
     contentPaddingCm,
+    // Export
+    noExport,
     exportUniqueId,
     exportOptions,
   } = props;
 
-  const [isToExport, setIsToExport] = useState(exportOptions.isToExport);
+  const [exportingCanvasIds, setExportingCanvasIds] = useState<string[]>(
+    exportOptions.exportingCanvasIds,
+  );
 
   const { canvasDimensions } = useCanvasSizeCommon({
     canvasDimensionCm,
@@ -30,7 +34,7 @@ function useCanvasBaseAndDim(props: Props) {
     const s = canvasDimensions;
     const p = s.bleedingPaddings;
     if (
-      (isToExport &&
+      (exportingCanvasIds &&
         (!exportOptions.inclBleedingArea ||
           !exportOptions.inclBleedingMarks)) ||
       (!p[0] && !p[1] && p[2] && !p[3])
@@ -104,59 +108,82 @@ function useCanvasBaseAndDim(props: Props) {
         {TopRightMark}
         {BottomLeftMark}
         {BottomRightMark}
-        {!isToExport ? CenterBlockMark : null}
+        {!exportingCanvasIds ? CenterBlockMark : null}
       </div>
     );
   }, [
     canvasDimensions,
     exportOptions.inclBleedingArea,
     exportOptions.inclBleedingMarks,
-    isToExport,
+    exportingCanvasIds,
   ]);
 
-  const ExportButton = useMemo(() => {
-    const onClick = () => {
-      exportCanvasToImage('calender', exportUniqueId, {
+  const handleExport = useCallback(
+    (exportId: string) => {
+      exportCanvasToImage(exportId, {
         exportOptions,
         exportStartCallback: () => {
-          setIsToExport(true);
+          setExportingCanvasIds((curList) => {
+            return curList.includes(exportId)
+              ? curList
+              : [...curList, exportId];
+          });
         },
         exportEndCallback: (err) => {
-          setIsToExport(false);
+          setExportingCanvasIds((curList) => {
+            return curList.includes(exportId)
+              ? curList.filter((id) => id !== exportId)
+              : curList;
+          });
           if (err) {
             console.error('Error export image', err);
           }
         },
       });
-    };
-    const cls = clsx(
-      'radui absolute right-0 top-0 ml-1 origin-bottom translate-y-[-2rem] rounded-sm border-slate-800 bg-white p-1 text-sm shadow-sm hover:border-lime-600 hover:bg-lime-100 disabled:bg-slate-400 disabled:text-slate-600 dark:border-slate-300 dark:disabled:bg-slate-500 dark:disabled:text-slate-400',
-    );
-    return (
-      <button className={cls} disabled={isToExport} onClick={onClick}>
-        <FontAwesomeIcon
-          className={clsx('mr-1 animate-spin', { hidden: !isToExport })}
-          icon={faSpinner}
-        />
-        Export Image
-      </button>
-    );
-  }, [exportOptions, exportUniqueId, isToExport]);
+    },
+    [exportOptions],
+  );
+
+  const renderExportButton = useCallback(
+    (exportId: string) => {
+      const isExporting = exportingCanvasIds.includes(exportId);
+      const onClick = () => handleExport(exportId);
+      const cls = clsx(
+        'radui absolute right-0 top-0 ml-1 origin-bottom translate-y-[-2rem] rounded-sm border-slate-800 bg-white p-1 text-sm shadow-sm hover:border-lime-600 hover:bg-lime-100 disabled:bg-slate-400 disabled:text-slate-600 dark:border-slate-300 dark:disabled:bg-slate-500 dark:disabled:text-slate-400',
+      );
+      return (
+        <button className={cls} disabled={isExporting} onClick={onClick}>
+          <FontAwesomeIcon
+            className={clsx('mr-1 animate-spin', {
+              hidden: !isExporting,
+            })}
+            icon={faSpinner}
+          />
+          Export Image
+        </button>
+      );
+    },
+    [exportingCanvasIds, handleExport],
+  );
 
   // Canvas is done with absolute position.
   // Tailwind CSS will be ineffective inside.
   const renderCanvas = useCallback(
-    (options: { children: ReactNode }) => {
+    (options: { children: ReactNode, key?: string, idAppend?: string }) => {
+      const { idAppend } = options;
       const s = canvasDimensions;
       const padding = s.bleedingPaddings
         .map((n) => (n ? `${n}px` : 0))
         .join(' ');
 
       const wrapperCls = clsx(commonClasses.CANVAS, `relative bg-white`, {
-        'shadow-md': !isToExport,
+        'shadow-md': !exportingCanvasIds,
       });
-      return (
-        <div className="relative m-5" id={exportUniqueId}>
+      const canvasId = idAppend
+        ? `${exportUniqueId}-${idAppend}`
+        : exportUniqueId;
+      const CanvasRendered = (
+        <div className="relative m-5" id={canvasId} key={options.key}>
           {/** Canvas with bleeding */}
           <div
             className={wrapperCls}
@@ -181,11 +208,24 @@ function useCanvasBaseAndDim(props: Props) {
               {options.children}
             </div>
           </div>
-          {ExportButton}
+          {!noExport && renderExportButton(canvasId)}
         </div>
       );
+      return {
+        canvas: CanvasRendered,
+        canvasId,
+        exportCanvas: () => handleExport(canvasId),
+      };
     },
-    [BleedingMark, ExportButton, canvasDimensions, exportUniqueId, isToExport],
+    [
+      BleedingMark,
+      canvasDimensions,
+      exportUniqueId,
+      exportingCanvasIds,
+      handleExport,
+      noExport,
+      renderExportButton,
+    ],
   );
 
   const output = useMemo(

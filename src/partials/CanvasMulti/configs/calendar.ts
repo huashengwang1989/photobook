@@ -1,7 +1,7 @@
 import type {
   ImageFileToDateInfo,
   SpecialDayConfig,
-} from '../CanvasCalendar/types';
+} from '../../CanvasCalendar/types';
 
 const year = 2023;
 /** Jun - Dec */
