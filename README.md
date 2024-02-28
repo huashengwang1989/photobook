@@ -2,6 +2,8 @@
 
 This is a project for my personal photobook pages generation. It is to serve the purpose of making photobook for kid's school life.
 
+This app shall output a batch of images of individual pages, which can be uploaded to existing web-based photobook printing services to make physical photobooks. Alternatively, you may combine them to PDF by yourself and pass to offline printing company. This is NOT an online or digital photobook generator or presenter.
+
 It generate pages for two parts:
 
 - A. Monthly Calendar Pages, with school daily check in and and check out photos. For absent days or any day without photos, it support placeholder icons.
@@ -9,6 +11,12 @@ It generate pages for two parts:
 - B. Ad-hoc activity photos. One activity can have multiple pages. It support meta information on the first page, and arranging photos underneath the meta information and on subsequent pages.
 
 > As this is auto-generation, currently it is programmed as maximum 2 photos underneath the meta information in the first page, and maximum 4 photos for subsequent pages for one activity. This is not configurable at current stage, though you may minor adjust them (see `pageAdjust.activity` in project config file. Refer to "Config Your Own Photobook Project" section for details).
+
+## Background
+
+This app is created based on picture files and information that can be extracted from LittleLives, which Singapore's PCF Sparkletots Preschool was using for parent-teacher communication and daily trackings. LittleLives itself offer functionality of batch photo download for both calendar part (individual month) and activity part (all photos for a period - you need re-organise them to individual activities).
+
+For 2024 onwards, PCF Sparkletots has switched to customised app by Qoqolo. I will see how it can be updated to suit Qoqolo's context.
 
 ## Kick Start
 
@@ -60,6 +68,10 @@ It is recommended to do in the following way:
 
 Filename format parsing is not included in the project config file (as it is meant to be exportable to json in the future). You may refer to `/src/partials/CanvasMulti/configs/calendar.ts` if you need update it.
 
+**LittleLives**: Above demonstrated image filenames is indeed the same filename format when you mass output the check-in and check-out images.
+
+**Qoqolo**: There is no batch export function for Qoqolo. If you manually save each image by yourself (not recommended, very tedious), you need rename the image files as the default filename is a random string. (TODO: a python script to automatically extract check-in-out images and rename them in above format)
+
 ##### Activity
 
 For activity photos, images are required to organised in sub-folders based on activities:
@@ -80,11 +92,13 @@ For activity photos, images are required to organised in sub-folders based on ac
   + ...
 ```
 
-For each activity's folder name, it is required to have date information included in the folder name, or that folder shall be omitted. The date format can be `yyyy_mm_dd` as above, or `yyyy-mm-dd` or `yyyymmdd`.
+It is suggested to organise them ad-hocly, e.g. once a month, and proofreading yourself for the content to be included in README.md, instead of to have all to organise in one shot at the end of a year.
 
-For photos' filename, it can be any name (which the default filesnames from my school's system is random strings). Howerver for activity, it is required to have a `README.md` for activity details, so that program can display title, description etc. on the first page meta section.
+For each activity's folder, it is required to have date information included in the folder name, or that folder shall be omitted. The date format can be `yyyy_mm_dd` as above, or alternatively, `yyyy-mm-dd` or `yyyymmdd`.
 
-README file content format as follows. Note that for h3 (###) headings, you need have it exactly the same as what is having below. For "Objectives", "Description", "Developments", if you don't have the content, please leave "N.A." or empty. DO NOT leave "-" there as Markdown will treat it as a list.
+For filenames of images, any name shall work (which the default filesnames from LittleLives are random strings). Howerver for activity, it is required to have a `README.md` for activity details and include it in the activity folder, so that program can display title, description etc. on the first page meta section. Filename must be `README.md`.
+
+README file content format is as follows. Note that for h3 (###) headings, you need make it exactly the same as what is having below. For "Objectives", "Description" and "Developments", if you don't have the content, please leave "N.A." or empty. DO NOT leave "-" there as Markdown will treat it as a list.
 
 ```md
 
@@ -107,24 +121,35 @@ The teacher will demonstrate .....
 
 Xxx Teacher: Teacher A, Teacher B
 
-Activity Timestamp: 2023-10-31 15:20
+Activity Timestamp: 2023-10-28 15:20
 Publish Timestamp: 2023-10-31 19:54
 
 ```
 
 For "Meta" part, it now consists of the three parts:
 
-- Teacher: program will check the presence of "teacher:". If have multiples, split them with "," or newline.
+- Teacher: program will check the presence of "teacher:". If have multiples, split them with ",".
 
-- Activity Timestamp and Publish Timestamp: they are to display as is. If don't have the information, just omit the lines.
+- Activity Timestamp and Publish Timestamp: timestamps are to display as is. If don't have the information, just omit the lines.
 
+**Qoqolo Case**: Qoqolo system does not register activity timestamp. You may still manually deduce them if the image filenames contain the information, depending on teachers' device and software used in fact; if not the case, you may have to remove the "Activity Timestamp" line. Note that teacher may only upload photos a few days later after the event.
 
 #### IDE
 
 It is suggested to use VSCode. You may install related plugins for `prettier` and `tailwindCSS` etc.
 
-### Current Status
+### Current Status & Notes
 
-This is a personal project, so there are a lot of hard-coded, and practices based on personal habit. It is not meant for any generic solution -- at least not yet.
+This is a personal project, so there are a lot of hard-coded parts as well as practices based on personal habit. It is not meant for any generic solution -- at least not yet.
 
-It is currently developed on Mac for Photo Album with pages 20x20cm. Despite that it is configurable at config files, other cases are not tried and tested.
+It is currently developed on Mac for Photobook with pages 20x20cm (8" x 8"). Despite that it is configurable at config files, other cases are not tried and tested. If you are making a lager squarish book, you may simply increase the DPI in the config files; however if your photobook is not square, please make sure that it is checked for each page's layout. I cannot guarantee that it will not overflow.
+
+#### Calendar
+
+You may take additional caution on calendars. Please check that the content does not overflow and exceed the border / bleeding marks (you may enable bleed marks at config files). A non-square horizontal book may cause it to overflow; too-long texts in the cell (depending on what you put for the labels in `configs.pageConfig.calendar.specialDays`).
+
+#### Fonts
+
+Font is setup at `tailwind.config.ts` in root folder. If you change font, do check the export results.
+
+Image generation is done via converting to canvas with existing library, and ligature for some fonts may not work properly at this part. This may make it less aesthetically appealing, and even overflows as letter spacing may be affected.
