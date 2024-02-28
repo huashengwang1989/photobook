@@ -94,7 +94,7 @@ For activity photos, images are required to organised in sub-folders based on ac
 
 It is suggested to organise them ad-hocly, e.g. once a month, and proofreading yourself for the content to be included in README.md, instead of to have all to organise in one shot at the end of a year.
 
-For each activity's folder, it is required to have date information included in the folder name, or that folder shall be omitted. The date format can be `yyyy_mm_dd` as above, or alternatively, `yyyy-mm-dd` or `yyyymmdd`.
+For each activity's folder, it is required to have date information included in the folder name, or that folder shall be omitted. The date format can be `yyyy_mm_dd` as above, or alternatively, `yyyy-mm-dd` or `yyyymmdd`. For other parts in folder name, they are for your own reference only. Title will only be extracted from README.md h2 (##) line.
 
 For filenames of images, any name shall work (which the default filesnames from LittleLives are random strings). Howerver for activity, it is required to have a `README.md` for activity details and include it in the activity folder, so that program can display title, description etc. on the first page meta section. Filename must be `README.md`.
 
@@ -146,10 +146,10 @@ It is currently developed on Mac for Photobook with pages 20x20cm (8" x 8"). Des
 
 #### Calendar
 
-You may take additional caution on calendars. Please check that the content does not overflow and exceed the border / bleeding marks (you may enable bleed marks at config files). A non-square horizontal book may cause it to overflow; too-long texts in the cell (depending on what you put for the labels in `configs.pageConfig.calendar.specialDays`).
+You may take additional caution on calendars. Please check that the content does not overflow and exceed the border / bleeding marks (you may enable bleed marks at config files). A non-square horizontal book may cause it to overflow; too-long texts in the cell may also result in so (depending on what you put for the labels in `configs.pageConfig.calendar.specialDays`). Perform final proof with exported images too, for the reason as stated in "Fonts" part below.
 
 #### Fonts
 
-Font is setup at `tailwind.config.ts` in root folder. If you change font, do check the export results.
+Font is setup at `tailwind.config.ts` in root folder. Do check the export images, especially if you change the fonts.
 
-Image generation is done via converting to canvas with existing library, and ligature for some fonts may not work properly at this part. This may make it less aesthetically appealing, and even overflows as letter spacing may be affected.
+Image generation is done via converting to canvas with existing library, and ligature for some fonts may not work properly or as expected at this part. This may make it less aesthetically appealing, and even overflows as letter spacing may be affected.
