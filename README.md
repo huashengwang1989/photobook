@@ -20,6 +20,12 @@ It should directly open tauri app.
 
 Note that if you run `npm run dev`, you may still open it in browser `http://localhost:5173/`. However, as browser cannot directly retrieve files from local drive, that functionality is based on Tauri, and running from browser won't work.
 
+### Config Your Own Photobook Project
+
+Please navigate to `/src/projects` folder. Duplicate `demo_project.config.ts` and make your own file. Update `index.ts` thereafter.
+
+
+
 #### IDE
 
 It is suggested to use VSCode. You may install related plugins for `prettier` and `tailwindCSS` etc.
