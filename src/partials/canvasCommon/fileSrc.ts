@@ -10,20 +10,23 @@ import type {
   CommonPropsForImageFilesWithMeta as Props,
 } from './types';
 
-const ignoredExtLower = commonIgnoreFileExtensions.map((ext) =>
-  ext.toLowerCase(),
-);
-
 function useImageFileSrcCommon<Meta extends Record<string, unknown>>(
   props: Props<Meta>,
 ) {
   const {
     folderSrc,
     supportedExtensions,
+    ignoredExtensions,
     preventRecursiveCheck,
     checkFileApplicability,
     customMetaGeneration,
   } = props;
+
+  const ignoredExtLower = [
+    ...commonIgnoreFileExtensions,
+    ...(ignoredExtensions || []),
+  ].map((ext) => ext.toLowerCase());
+
   const normalisedSupportedExtensions = useMemo(() => {
     if (!supportedExtensions?.length) {
       return undefined;
@@ -95,6 +98,7 @@ function useImageFileSrcCommon<Meta extends Record<string, unknown>>(
     checkFileApplicability,
     customMetaGeneration,
     folderSrc,
+    ignoredExtLower,
     normalisedSupportedExtensions,
     preventRecursiveCheck,
   ]);

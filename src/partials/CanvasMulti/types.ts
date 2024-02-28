@@ -15,6 +15,13 @@ import type {
   CommonPropsForCanvasSize,
 } from '../canvasCommon/types';
 
+import type {
+  MergedConfigs,
+  CanvasOptions,
+  CalendarPageConfig,
+  ActivityPageAdjust,
+} from '../../projects/types';
+
 export type {
   ImageFileToDataInfoForCal,
   SpecialDayConfig,
@@ -24,4 +31,9 @@ export type {
   FileEntry,
   CommonPropsForCanvasSize,
   CanvasToImageExportOptions,
+  // From Project configs side
+  MergedConfigs,
+  CanvasOptions,
+  CalendarPageConfig,
+  ActivityPageAdjust,
 };

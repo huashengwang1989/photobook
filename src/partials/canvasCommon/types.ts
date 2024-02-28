@@ -5,6 +5,8 @@ type CommonPropsForImageFiles = {
   preventRecursiveCheck?: boolean,
   checkFileApplicability?: (file: FileEntry) => boolean,
   supportedExtensions?: string[],
+  // Not setting optional here to avoid missed out handlings at other places. Feed in [] as default
+  ignoredExtensions: string[],
 };
 
 type CommonPropsForImageFilesWithMeta<Meta extends Record<string, unknown>> =

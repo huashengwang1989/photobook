@@ -13,17 +13,24 @@ import { useCanvasBaseAndDim } from '../canvasBaseAndDim';
 import { useImageFileSrcCommon } from '../canvasCommon';
 import { noPhotoPlaceholders } from './constants';
 
-import type { WeekDay, SpecialDayConfig, Props, DateCell } from './types';
+import type {
+  WeekDay,
+  SpecialDayConfig,
+  Props,
+  DateCell,
+  YyyyMmdd,
+} from './types';
 
 const CalendarCanvas: FC<Props> = (props) => {
   const {
     folderSrc,
     firstColumn: weekStart,
     supportedExtensions,
+    ignoredExtensions,
     checkFileApplicability,
     imageFileToDateInfo,
-    targetMonth: month,
     targetYear: year,
+    targetMonth: month,
     specialDaysByYyyyMmDd,
     // Canvas
     canvasDimensionCm,
@@ -40,6 +47,7 @@ const CalendarCanvas: FC<Props> = (props) => {
   const { getAllApplicableFilesInFolder } = useImageFileSrcCommon({
     folderSrc,
     supportedExtensions,
+    ignoredExtensions,
     checkFileApplicability,
     customMetaGeneration: imageFileToDateInfo,
   });
@@ -137,7 +145,7 @@ const CalendarCanvas: FC<Props> = (props) => {
     // so we need not handle skipped dates. It is too edge-case.
 
     while (curDate <= lastDate) {
-      const yyyyMmDd = `${year}${dd(month + 1)}${dd(curDate)}`;
+      const yyyyMmDd = `${year}${dd(month + 1)}${dd(curDate)}` as YyyyMmdd;
       const cell: DateCell = {
         key: `d-${curDate}`,
         yyyyMmDd,

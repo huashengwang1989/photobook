@@ -24,6 +24,7 @@ const ActivityCanvas = <T extends MInfoB = MInfoB>(
   const {
     folderSrc,
     supportedExtensions,
+    ignoredExtensions,
     checkFileApplicability,
     fileNamePathToDateInfo,
     // Canvas
@@ -56,6 +57,7 @@ const ActivityCanvas = <T extends MInfoB = MInfoB>(
   const { getAllApplicableFilesInFolder } = useImageFileSrcCommon({
     folderSrc,
     supportedExtensions: supportedExtensionsInclMeta,
+    ignoredExtensions,
     checkFileApplicability,
     // As filename is random, please use parent folder from path to generate it.
     customMetaGeneration: fileNamePathToDateInfo,

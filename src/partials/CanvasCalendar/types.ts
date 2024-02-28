@@ -7,6 +7,8 @@ import type {
   CanvasToImageExportOptions,
 } from '../canvasCommon/types';
 
+import type { YyyyMmdd } from '@/types/ts';
+
 type NoPhotoReason =
   | 'doctor'
   | 'immunization'
@@ -56,7 +58,7 @@ type Props = CommonPropsForImageFiles &
     targetYear: number,
     targetMonth: number,
     firstColumn: 'Sun' | 'Mon',
-    specialDaysByYyyyMmDd?: Partial<Record<string, SpecialDayConfig>>,
+    specialDaysByYyyyMmDd?: Partial<Record<YyyyMmdd, SpecialDayConfig>>,
     exportUniqueId: string,
     exportOptions: CanvasToImageExportOptions,
     onCanvasIdsUpdate?: (ids: string[]) => void,
@@ -64,6 +66,7 @@ type Props = CommonPropsForImageFiles &
   };
 
 export type {
+  YyyyMmdd,
   NoPhotoReason,
   WeekDay,
   FileEntry,

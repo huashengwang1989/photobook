@@ -5,14 +5,15 @@ import type { CanvasToImageExportOptions } from '../partials/canvasCommon/types'
 
 const Header = (props: {
   allCanvasIds: string[],
-  exportOptions: CanvasToImageExportOptions,
+  exportOptions: Omit<CanvasToImageExportOptions, 'exportingCanvasIds'>,
 }) => {
   const { allCanvasIds, exportOptions } = props;
 
+  // Export All stage and progress
   const [stage, setStage] = useState('');
   const [pgs, setPgs] = useState(0);
 
-  const StatusIndicator = useMemo(() => {
+  const ExportAllStatusIndicator = useMemo(() => {
     if (!stage) {
       return null;
     }
@@ -57,8 +58,8 @@ const Header = (props: {
           <div className="relative flex flex-grow-0 items-center">
             {ExportAllButton}
           </div>
-          <div className="relative flex flex-grow-0 items-center">
-            {StatusIndicator}
+          <div className="relative ml-1 flex flex-grow-0 items-center">
+            {ExportAllStatusIndicator}
           </div>
         </div>
       </div>

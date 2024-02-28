@@ -1,14 +1,6 @@
 import { dd } from '@/utils/num/dd';
+
 import type { ImageFileToDateInfo, FileMeta } from '../../CanvasActivity/types';
-
-const foldersLimitToTwoPhotosPerPage: string[] = [
-  '2023_09_27 Growth Activity - 探索颜料 [Fang Jing]',
-  '2023_10_10 Growth Activity - 儿歌-我爱我的动物 [Fang Jing]',
-];
-
-const foldersWithLastPageToSplitToTwo: string[] = [
-  '2023_10_24 Growth Activity - 探索声音 [Fang Jing]',
-];
 
 const folderNameToMeta = (
   parentFolderName: string,
@@ -60,9 +52,4 @@ const activityFolderNameToDateInfo: ImageFileToDateInfo = (file) => {
   };
 };
 
-export {
-  fileNamePathToDateInfo,
-  activityFolderNameToDateInfo,
-  foldersLimitToTwoPhotosPerPage,
-  foldersWithLastPageToSplitToTwo,
-};
+export { fileNamePathToDateInfo, activityFolderNameToDateInfo };

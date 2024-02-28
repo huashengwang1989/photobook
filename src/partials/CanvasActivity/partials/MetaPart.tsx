@@ -6,7 +6,7 @@ import { useFetch } from '@/utils/hooks/useFetch';
 
 import { useMetaFileContent } from '../helpers/meta';
 
-import MetaTimestamp from './Timstamp';
+import MetaTimestamp from './Timestamp';
 
 import type { MetaContent } from '../helpers/meta/types';
 import type { MetaInfoTypeBase as MInfoB } from '../types.config';
@@ -44,7 +44,7 @@ const MetaPart = <T extends MInfoB = MInfoB>(props: {
     };
     const getHtml = (s: string) => ({ dangerouslySetInnerHTML: { __html: s } });
     return (
-      <div className="font-activitySans whitespace-pre-wrap">
+      <div className="whitespace-pre-wrap font-activitySans">
         <div className="mb-4">
           {/** Title */}
           {cs.title && (

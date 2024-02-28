@@ -8,34 +8,33 @@ import CanvasActivity from '../../CanvasActivity';
 import {
   fileNamePathToDateInfo as imageFileToDateInfoForActivity,
   activityFolderNameToDateInfo,
-  foldersLimitToTwoPhotosPerPage,
-  foldersWithLastPageToSplitToTwo,
 } from '../configs/activity';
-
-import { canvasSizeProps, folderBaseSrcForActivity } from '../configs/base';
 
 import type {
   CanvasActivityProps,
   FileEntry,
+  CanvasOptions,
   CanvasToImageExportOptions,
+  ActivityPageAdjust,
 } from '../types';
-
-const commonCanvasActivityProps: Omit<
-  CanvasActivityProps,
-  // eslint-disable-next-line prettier/prettier
-  'folderSrc' | 'exportUniqueId' | 'exportOptions'
-> = {
-  fileNamePathToDateInfo: imageFileToDateInfoForActivity,
-  ...canvasSizeProps,
-};
 
 const checkApplicabilityAsParentFolder = (f: FileEntry) =>
   Boolean(f.children && f.path);
 
 function useAvtivityPages(props: {
+  baseFolder: string,
+  ignoredExtensions: string[],
+  canvasOptions: CanvasOptions,
   exportOptions: CanvasToImageExportOptions,
+  pageAdjust: ActivityPageAdjust,
 }) {
-  const { exportOptions } = props;
+  const {
+    canvasOptions,
+    baseFolder,
+    ignoredExtensions,
+    exportOptions,
+    pageAdjust,
+  } = props;
 
   const [canvasIdsByActivity, setCanvasIdsByActivity] = useState<string[][]>(
     [],
@@ -46,15 +45,18 @@ function useAvtivityPages(props: {
   );
 
   const { getAllApplicableFilesInFolder } = useImageFileSrcCommon({
-    folderSrc: folderBaseSrcForActivity,
+    folderSrc: baseFolder,
     preventRecursiveCheck: true,
+    ignoredExtensions,
     customMetaGeneration: activityFolderNameToDateInfo,
     checkFileApplicability: checkApplicabilityAsParentFolder,
   });
+
   const { data: subFolders } = useFetch({
     func: getAllApplicableFilesInFolder,
     defaultValue: [],
   });
+
   const { activityCanvasesGrouped } = useMemo(() => {
     return subFolders.reduce<{
       activityCanvasesGrouped: ReactNode[],
@@ -73,12 +75,14 @@ function useAvtivityPages(props: {
         const folderSrc = folder.path;
         const folderName = folder.name.trim();
         const canvasActivityProps: CanvasActivityProps = {
-          ...commonCanvasActivityProps,
+          fileNamePathToDateInfo: imageFileToDateInfoForActivity,
+          ...canvasOptions,
           folderSrc,
+          ignoredExtensions,
           limitToTwoPerPage:
-            foldersLimitToTwoPhotosPerPage.includes(folderName),
+            pageAdjust.foldersLimitToTwoPhotosPerPage.includes(folderName),
           lastPageSplitToTwo:
-            foldersWithLastPageToSplitToTwo.includes(folderName),
+            pageAdjust.foldersWithLastPageToSplitToTwo.includes(folderName),
           exportOptions,
           exportUniqueId: activityId,
           onCanvasExportHandlersUpdate: (exports) => {
@@ -118,7 +122,14 @@ function useAvtivityPages(props: {
         __byDateFolderCount: {},
       },
     );
-  }, [exportOptions, subFolders]);
+  }, [
+    canvasOptions,
+    exportOptions,
+    ignoredExtensions,
+    pageAdjust.foldersLimitToTwoPhotosPerPage,
+    pageAdjust.foldersWithLastPageToSplitToTwo,
+    subFolders,
+  ]);
 
   const activityCanvasIds = useMemo(() => {
     return ([] as string[]).concat(

@@ -52,7 +52,7 @@ const saveImages = async (
 
 const getDomToExport = (
   id: string,
-  exportOptions: ExportMergedOptions['exportOptions'],
+  exportOptions: Pick<ExportMergedOptions['exportOptions'], 'inclBleedingArea'>,
 ) => {
   const mainDom = document.getElementById(id);
   if (!mainDom) {
