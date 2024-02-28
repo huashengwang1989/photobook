@@ -4,6 +4,8 @@ This is a project for my personal photobook pages generation. It is to serve the
 
 This app shall output a batch of images of individual pages, which can be uploaded to existing web-based photobook printing services to make physical photobooks. Alternatively, you may combine them to PDF by yourself and pass to offline printing company. This is NOT an online or digital photobook generator or presenter.
 
+> Despite that it is meant for offline printing, pictures generated is still sRGB, and source images are also expected to be sRGB. Most online printing services also do not support other color profiles or handle them well. For offline printing, you may need convert to CMYK by yourself, based on individual printing company's requirement.
+
 It generate pages for two parts:
 
 - A. Monthly Calendar Pages, with school daily check in and and check out photos. For absent days or any day without photos, it support placeholder icons.
