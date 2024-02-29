@@ -41,18 +41,6 @@ const specialDaysByYyyyMmDd: Partial<Record<string, SpecialDayConfig>> = {
     noPhotoReason: 'holiday',
   },
   // 2023-07
-  20230701: {
-    // Example of being absent (no photos) for clinic visit
-    label: '🏥 Clinic',
-    subLabel: 'NUH',
-    noPhotoReason: 'doctor',
-  },
-  20230702: {
-    // Example of being absent (no photos) for getting vaccination
-    label: 'Immunization',
-    subLabel: '💉 Clementi PC',
-    noPhotoReason: 'immunization',
-  },
   20230703: {
     // Example of being absent by just marking it as "sick"
     noPhotoReason: 'sick',
@@ -70,6 +58,18 @@ const specialDaysByYyyyMmDd: Partial<Record<string, SpecialDayConfig>> = {
     subLabel: '大扫除',
     isSchoolEvent: true,
     noPhotoReason: 'school-event',
+  },
+  20230706: {
+    // Example of being absent (no photos) for clinic visit
+    label: '🏥 Clinic',
+    subLabel: 'Some Place',
+    noPhotoReason: 'doctor',
+  },
+  20230710: {
+    // Example of being absent (no photos) for getting vaccination
+    label: 'Immunization',
+    subLabel: '💉 Polyclinic',
+    noPhotoReason: 'immunization',
   },
   // 2023-08
   20230808: {
@@ -168,10 +168,10 @@ const activityPageAdjust: ActivityPageAdjust = {
   foldersWithLastPageToSplitToTwo: ['2023_08_02 My Another Activity'],
 };
 
-// This is based on Mac folder structure. Windows is NOT tested.
+// Absolute paths only
 const baseFolders = {
   calendar: '/Users/my-user-name/Pictures/2023 My Kid Check-in-out Photos',
-  activity: '/Users/my-user-name/Pictures/Photos/2023 My Kid Activity Photos',
+  activity: '/Users/my-user-name/Pictures/2023 My Kid Activity Photos',
 };
 
 const configs: MergedConfigs = {

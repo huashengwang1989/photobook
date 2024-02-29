@@ -148,7 +148,9 @@ It is currently developed on Mac for Photobook with pages 20x20cm (8" x 8"). Des
 
 #### Calendar
 
-You may take additional caution on calendars. Please check that the content does not overflow and exceed the border / bleeding marks (you may enable bleed marks at config files). A non-square horizontal book may cause it to overflow; too-long texts in the cell may also result in so (depending on what you put for the labels in `configs.pageConfig.calendar.specialDays`). Perform final proof with exported images too, for the reason as stated in "Fonts" part below.
+You may take additional caution on calendars. Please check that the content does not overflow and exceed the border / bleeding marks (you may enable bleed marks at config files), especially for months that may cross 6 weeks' spans (aka. 6 rows). It is deliberate to have rows without any photo to have a smaller height.
+
+A non-square horizontal book may also cause it to overflow; too-long texts in the cell may also result in so (depending on what you put for the labels in `configs.pageConfig.calendar.specialDays`). Perform final proof with exported images too, for the reason as stated in "Fonts" part below.
 
 #### Fonts
 
