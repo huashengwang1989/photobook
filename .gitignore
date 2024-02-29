@@ -23,3 +23,4 @@ dist-ssr
 
 # Personal Project Configs
 /src/projects/my_2023.config.ts
+/src/projects/test_project.config.ts
