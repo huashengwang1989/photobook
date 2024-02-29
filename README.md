@@ -51,6 +51,10 @@ You are required to pre-organise them in the following manner. For each project,
 
 ##### Calendar
 
+![Calendar Exported Image Sample](./demo/exported_images/calendar-2023-07_300_b.jpg "Calendar Exported Image Sample")
+
+> For above demo, 24 Jul and 26 Jul are deliberately to omit the check-in / check-out photos respectively, to simulate the case that the system does not record one of them, for cases like system breakdown.
+
 For Calendar photos, the image files need have name in `yyyy-mm-dd-in.jpg` or `yyyy-mm-dd-out.jpg` format. Program needs be able to extract the date and "in/out" information from the file-name.
 
 It is recommended to do in the following way:
@@ -75,6 +79,10 @@ Filename format parsing is not included in the project config file (as it is mea
 **Qoqolo**: There is no batch export function for Qoqolo. If you manually save each image by yourself (not recommended, very tedious), you need rename the image files as the default filename is a random string. (TODO: a python script to automatically extract check-in-out images and rename them in above format)
 
 ##### Activity
+
+| Page 1 | Page 2 |
+|--|--|
+|![Activity Exported Image Sample Page 1](./demo/exported_images/activity-20230711-1-page_1_300_b.jpg "Activity Exported Image Sample - Page 1 of One Activity")|![Activity Exported Image Sample Page 2](./demo/exported_images/activity-20230711-1-page_2_300_b.jpg "Activity Exported Image Sample - Page 2 of One Activity")|
 
 For activity photos, images are required to organised in sub-folders based on activities:
 
