@@ -32,22 +32,20 @@ function useCanvasMulti(props: { project: MergedConfigs }) {
     ...canvasOptions,
   });
   // ---- Calendar Canvas ----
-  const { calCanvases, calCanvasIds, calCanvasExports } = useCalPages({
+  const { calCanvases, calCanvasIds } = useCalPages({
     exportOptions: mergedExportOptions,
     baseFolder: project.baseFolders.calendar,
     ignoredExtensions: project.ignoreFileExtensions || defaultIgnoredExtensions,
     canvasOptions: project.canvasOptions,
     calendarConfigs: project.pageConfig.calendar,
   });
-  const { activityCanvasesGrouped, activityCanvasIds, activityCanvasExports } =
-    useAvtivityPages({
-      exportOptions: mergedExportOptions,
-      baseFolder: project.baseFolders.activity,
-      ignoredExtensions:
-        project.ignoreFileExtensions || defaultIgnoredExtensions,
-      canvasOptions: project.canvasOptions,
-      pageAdjust: project.pageAdjust.activity,
-    });
+  const { activityCanvasesGrouped, activityCanvasIds } = useAvtivityPages({
+    exportOptions: mergedExportOptions,
+    baseFolder: project.baseFolders.activity,
+    ignoredExtensions: project.ignoreFileExtensions || defaultIgnoredExtensions,
+    canvasOptions: project.canvasOptions,
+    pageAdjust: project.pageAdjust.activity,
+  });
 
   const BlankCanvas = useMemo(
     () => renderBlankCanvas({ children: null }).canvas,
@@ -69,16 +67,8 @@ function useCanvasMulti(props: { project: MergedConfigs }) {
       CanvasMultiRendered,
       calendarCanvasIds: calCanvasIds,
       activityCanvasIds,
-      calCanvasExports,
-      activityCanvasExports,
     }),
-    [
-      CanvasMultiRendered,
-      activityCanvasExports,
-      activityCanvasIds,
-      calCanvasExports,
-      calCanvasIds,
-    ],
+    [CanvasMultiRendered, activityCanvasIds, calCanvasIds],
   );
 
   return output;
