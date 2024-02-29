@@ -1,4 +1,4 @@
-import { useMemo, useState, type ReactNode } from 'react';
+import { useMemo, type ReactNode } from 'react';
 
 import { dd } from '@/utils/num/dd';
 
@@ -82,14 +82,12 @@ function useCalPages(props: {
       }, []);
   }, [endYearMonth, startYearMonth]);
 
-  const [exportsByMonth, setExportsByMonth] = useState<(() => void)[][]>([]);
-
   const { calCanvasIds, calCanvases } = useMemo(() => {
     return yearMonths.reduce<{
       calCanvases: ReactNode[],
       calCanvasIds: string[],
     }>(
-      (acc, yearMonth, i) => {
+      (acc, yearMonth) => {
         const [year, m] = yearMonth;
         const folderName = `${year}-${dd(m + 1)}`;
         const folderSrc = `${baseFolder}/${folderName}`;
@@ -108,16 +106,11 @@ function useCalPages(props: {
           exportOptions,
           exportUniqueId,
           imageFileToDateInfo: imageFileToDateInfoForCal,
-          onCanvasExportHandlersUpdate: (exports) => {
-            setExportsByMonth((curExports) => {
-              const list = [...curExports];
-              list[i] = exports;
-              return list;
-            });
-          },
           // onCanvasIdsUpdate, // Only one canvas per month. So need not worry on this
         };
-        const CalCanvasRendered = <CanvasCal key={m} {...canvasCalProps} />;
+        const CalCanvasRendered = (
+          <CanvasCal key={folderName} {...canvasCalProps} />
+        );
         acc.calCanvasIds.push(exportUniqueId);
         acc.calCanvases.push(CalCanvasRendered);
         return acc;
@@ -137,19 +130,12 @@ function useCalPages(props: {
     yearMonths,
   ]);
 
-  const calCanvasExports = useMemo(() => {
-    return ([] as (() => void)[]).concat(
-      ...exportsByMonth.filter((exports) => Array.isArray(exports)),
-    );
-  }, [exportsByMonth]);
-
   const output = useMemo(
     () => ({
-      calCanvasExports,
       calCanvasIds,
       calCanvases,
     }),
-    [calCanvasExports, calCanvasIds, calCanvases],
+    [calCanvasIds, calCanvases],
   );
   return output;
 }

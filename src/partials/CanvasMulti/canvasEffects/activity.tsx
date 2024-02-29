@@ -40,10 +40,6 @@ function useAvtivityPages(props: {
     [],
   );
 
-  const [exportsByActivity, setExportsByActivity] = useState<(() => void)[][]>(
-    [],
-  );
-
   const { getAllApplicableFilesInFolder } = useImageFileSrcCommon({
     folderSrc: baseFolder,
     preventRecursiveCheck: true,
@@ -85,13 +81,6 @@ function useAvtivityPages(props: {
             pageAdjust.foldersWithLastPageToSplitToTwo.includes(folderName),
           exportOptions,
           exportUniqueId: activityId,
-          onCanvasExportHandlersUpdate: (exports) => {
-            setExportsByActivity((curExports) => {
-              const list = [...curExports];
-              list[i] = exports;
-              return list;
-            });
-          },
           onCanvasIdsUpdate: (ids) => {
             setCanvasIdsByActivity((curIds) => {
               const curList = curIds[i];
@@ -137,19 +126,12 @@ function useAvtivityPages(props: {
     );
   }, [canvasIdsByActivity]);
 
-  const activityCanvasExports = useMemo(() => {
-    return ([] as (() => void)[]).concat(
-      ...exportsByActivity.filter((exports) => Array.isArray(exports)),
-    );
-  }, [exportsByActivity]);
-
   const output = useMemo(
     () => ({
       activityCanvasesGrouped,
       activityCanvasIds,
-      activityCanvasExports,
     }),
-    [activityCanvasesGrouped, activityCanvasIds, activityCanvasExports],
+    [activityCanvasesGrouped, activityCanvasIds],
   );
 
   return output;
