@@ -4,6 +4,7 @@ import type {
   CommonPropsForCanvasSize,
   CustomMetaGeneration,
   FileEntry,
+  FileEntryWithMeta,
   CanvasToImageExportOptions,
 } from '../canvasCommon/types';
 
@@ -47,10 +48,12 @@ type DateCell = SpecialDayConfig & {
   rowIndex: number,
 };
 
-type ImageFileToDateInfo = CustomMetaGeneration<{
+type CalendarMeta = {
   yyyyMmDd: string,
   type: 'in' | 'out',
-}>;
+};
+
+type ImageFileToDateInfo = CustomMetaGeneration<CalendarMeta>;
 
 type Props = CommonPropsForImageFiles &
   CommonPropsForCanvasSize & {
@@ -70,6 +73,8 @@ export type {
   NoPhotoReason,
   WeekDay,
   FileEntry,
+  FileEntryWithMeta,
+  CalendarMeta,
   Props,
   SpecialDayConfig,
   DateCell,

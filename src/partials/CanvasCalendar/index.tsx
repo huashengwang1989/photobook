@@ -1,7 +1,6 @@
 import { useCallback, useMemo, type FC, useEffect } from 'react';
 import clsx from 'clsx';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import Image from '@/components/Image';
 import { useFetch } from '@/utils/hooks/useFetch';
 import { dd } from '@/utils/num/dd';
 import { weeksWithSunStart, weeksWithMonStart } from '@/utils/week/list';
@@ -12,6 +11,13 @@ import { names as monthNames } from '@/utils/month/names';
 import { useCanvasBaseAndDim } from '../canvasBaseAndDim';
 import { useImageFileSrcCommon } from '../canvasCommon';
 import { noPhotoPlaceholders } from './constants';
+
+import { genImagesWithMissingInOutFilledIn } from './helpers';
+import {
+  MonthCalGridCellDate,
+  MonthCalGridCellLabels,
+  InOutImage,
+} from './components';
 
 import type {
   WeekDay,
@@ -208,63 +214,16 @@ const CalendarCanvas: FC<Props> = (props) => {
 
   // ----- Renderings -----
 
-  const renderMonthCalGridCellDate = useCallback((cell: DateCell) => {
-    const dateColorCls = (() => {
-      if (
-        cell.isHoliday ||
-        ((cell.day === 0 || cell.day === 6) && !cell.isWeekendWork)
-      ) {
-        return clsx('text-lime-600');
-      }
-      return 'text-slate-800';
-    })();
-    return (
-      <div
-        className={clsx(
-          'mr-1 flex-grow-0 text-center font-sans text-base font-bold',
-          dateColorCls,
-        )}
-      >
-        {cell.date || ''}
-      </div>
-    );
-  }, []);
-
-  const renderMonthCalGridCellLabels = useCallback((cell: DateCell) => {
-    const isSingleLabel = Boolean(cell.label) !== Boolean(cell.subLabel);
-    const commonCls = clsx('text-left font-condensedSans font-semibold', {
-      'text-lime-600': cell.isHoliday,
-      'text-amber-600': cell.isTraditionalDay && !cell.isHoliday,
-      'text-cyan-600':
-        cell.isSchoolEvent && !cell.isHoliday && !cell.isTraditionalDay,
-      'mt-1': isSingleLabel, // Minor adjust position for better visual
-    });
-    const MainLabel = (
-      <div className={clsx(commonCls, 'text-xs')}>{cell.label}</div>
-    );
-    const SubLabel = (
-      <div className={clsx(commonCls, 'text-[0.5rem] leading-[0.75rem]')}>
-        {cell.subLabel}
-      </div>
-    );
-    return (
-      <div
-        className={clsx('flex-grow', {
-          'self-baseline': isSingleLabel,
-        })}
-      >
-        {Boolean(cell.label) && MainLabel}
-        {Boolean(cell.subLabel) && SubLabel}
-      </div>
-    );
-  }, []);
-
   const renderMonthCalGridCell = useCallback(
     (cell: DateCell, isNoPhotoRow: boolean) => {
       const images = photoFileDataByYyyyMmdd[cell.yyyyMmDd] || [];
       const plIcon = cell.noPhotoReason
         ? noPhotoPlaceholders[cell.noPhotoReason]
         : undefined;
+
+      const imagesToFillInMissingInOut =
+        genImagesWithMissingInOutFilledIn(images);
+
       return (
         <td
           key={cell.key}
@@ -274,17 +233,13 @@ const CalendarCanvas: FC<Props> = (props) => {
           )}
         >
           <div className="flex min-h-10">
-            {renderMonthCalGridCellDate(cell)}
-            {renderMonthCalGridCellLabels(cell)}
+            <MonthCalGridCellDate cell={cell} />
+            <MonthCalGridCellLabels cell={cell} />
           </div>
           <div className={'flex justify-evenly'}>
-            {images.map((img) => {
-              return (
-                <div key={img.meta.type} className={'m-[1px] h-auto w-[48%]'}>
-                  <Image src={img.assetUrl} alt={img.name} />
-                </div>
-              );
-            })}
+            {imagesToFillInMissingInOut.map((img) => (
+              <InOutImage key={img.meta.type} img={img} />
+            ))}
             {!images.length && plIcon && (
               <FontAwesomeIcon
                 className={'text-4xl text-slate-200'}
@@ -295,11 +250,7 @@ const CalendarCanvas: FC<Props> = (props) => {
         </td>
       );
     },
-    [
-      photoFileDataByYyyyMmdd,
-      renderMonthCalGridCellDate,
-      renderMonthCalGridCellLabels,
-    ],
+    [photoFileDataByYyyyMmdd],
   );
 
   const MonthCalcGridInner = useMemo(
@@ -407,13 +358,16 @@ const CalendarCanvas: FC<Props> = (props) => {
     [CanvasContent, renderCanvas],
   );
 
-  useEffect(() => {
-    onCanvasIdsUpdate?.(canvasId ? [canvasId] : []);
-  }, [canvasId, onCanvasIdsUpdate]);
+  const canvasIds = useMemo(() => (canvasId ? [canvasId] : []), [canvasId]);
+  const exportCanvases = useMemo(() => [exportCanvas], [exportCanvas]);
 
   useEffect(() => {
-    onCanvasExportHandlersUpdate?.([exportCanvas]);
-  }, [exportCanvas, onCanvasExportHandlersUpdate]);
+    onCanvasIdsUpdate?.(canvasIds);
+  }, [canvasIds, onCanvasIdsUpdate]);
+
+  useEffect(() => {
+    onCanvasExportHandlersUpdate?.(exportCanvases);
+  }, [exportCanvases, onCanvasExportHandlersUpdate]);
 
   return canvas;
 };
