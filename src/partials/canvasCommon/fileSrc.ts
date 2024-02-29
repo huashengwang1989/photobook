@@ -14,7 +14,7 @@ function useImageFileSrcCommon<Meta extends Record<string, unknown>>(
   props: Props<Meta>,
 ) {
   const {
-    folderSrc,
+    folderSrc, // Absolute path only
     supportedExtensions,
     ignoredExtensions,
     preventRecursiveCheck,
@@ -22,10 +22,13 @@ function useImageFileSrcCommon<Meta extends Record<string, unknown>>(
     customMetaGeneration,
   } = props;
 
-  const ignoredExtLower = [
-    ...commonIgnoreFileExtensions,
-    ...(ignoredExtensions || []),
-  ].map((ext) => ext.toLowerCase());
+  const ignoredExtLower = useMemo(
+    () =>
+      [...commonIgnoreFileExtensions, ...(ignoredExtensions || [])].map((ext) =>
+        ext.toLowerCase(),
+      ),
+    [ignoredExtensions],
+  );
 
   const normalisedSupportedExtensions = useMemo(() => {
     if (!supportedExtensions?.length) {
@@ -45,10 +48,12 @@ function useImageFileSrcCommon<Meta extends Record<string, unknown>>(
     if (!folderSrc) {
       return [];
     }
+
     const fileEntries = await readDir(folderSrc, {
       dir: undefined,
       recursive: !preventRecursiveCheck,
     });
+
     const output = fileEntries.reduce<FileEntryWithMeta<Meta>[]>(
       (acc, file) => {
         if (!file.name || !file.path) {
