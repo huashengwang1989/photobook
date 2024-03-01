@@ -18,7 +18,7 @@ It generates pages for two parts:
 
 This app is created based on picture files and information that can be extracted from **LittleLives**, which Singapore's PCF Sparkletots Preschool was using for parent-teacher communication and daily trackings. LittleLives itself offers functionality of batch photo download for both calendar part (individual months) and activity part (all photos for a period - you need re-organise them to individual activities).
 
-From 2024 onwards, PCF Sparkletots has switched to a customised app done by **Qoqolo**. For activities, you may organise the images in the same way; for calendar, you may need additional script to crawl, rename and organize the images (WIP), if you do not wish to do the tedious job manually.
+From 2024 onwards, PCF Sparkletots has switched to a customised app done by **Qoqolo**. For activities, you may organise the images in the same way; for calendar, you may need additional script to crawl, rename and organize the images, if you do not wish to do the tedious job manually. See Project [qoqolo-check-in-out-spider](https://github.com/huashengwang1989/qoqolo-check-in-out-spider).
 
 ## Kick Start
 
@@ -76,7 +76,7 @@ Filename format parsing is not included in the project config file (as it is mea
 
 **LittleLives**: Above demonstrated image filenames is indeed the same filename format when you mass output the check-in and check-out images from LittleLives.
 
-**Qoqolo**: There is no batch export function for Qoqolo. If you manually save each image by yourself (not recommended, very tedious), you need rename the image files to above-mentioned format as the default filename is a random string. (WIP: a python script to automatically extract check-in-out images and rename them in above format)
+**Qoqolo**: There is no batch export function for Qoqolo. If you manually save each image by yourself (not recommended, very tedious), you need rename the image files to above-mentioned format as the default filename is a random string. (See Project [qoqolo-check-in-out-spider](https://github.com/huashengwang1989/qoqolo-check-in-out-spider))
 
 ##### Activity
 
@@ -165,3 +165,8 @@ A non-square horizontal book may also cause it to overflow; too-long texts in th
 Font is setup at `tailwind.config.ts` in root folder. Do check the export images, especially if you change the fonts.
 
 Image generation is done via converting HTML to canvas with some open-sourced library. Ligature for some fonts may not work properly or as expected at this part. This may make it less aesthetically appealing, and even overflows as letter spacing may be affected.
+
+
+## Linked Project
+
+**Project [qoqolo-check-in-out-spider](https://github.com/huashengwang1989/qoqolo-check-in-out-spider)**: Allow you to fetch the daily check-in-out images in one shot from Qoqolo, and rename them so that they can be used for photobook here as calendar part.
