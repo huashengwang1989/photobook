@@ -6,13 +6,15 @@ import type {
 
 import type {
   ImageFileToDateInfo as ImageFileToDataInfoForActivity,
-  Props as CanvasActivityProps,
+  FistPageWithMetaProps,
+  NextPageProps,
 } from '../CanvasActivity/types';
 
 import type {
   FileEntry,
   CanvasToImageExportOptions,
   CommonPropsForCanvasSize,
+  ThemeProps,
 } from '../canvasCommon/types';
 
 import type {
@@ -27,10 +29,12 @@ export type {
   SpecialDayConfig,
   CanvasCalProps,
   ImageFileToDataInfoForActivity,
-  CanvasActivityProps,
+  FistPageWithMetaProps,
+  NextPageProps,
   FileEntry,
   CommonPropsForCanvasSize,
   CanvasToImageExportOptions,
+  ThemeProps,
   // From Project configs side
   MergedConfigs,
   CanvasOptions,

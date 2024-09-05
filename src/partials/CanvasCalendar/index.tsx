@@ -48,6 +48,8 @@ const CalendarCanvas: FC<Props> = (props) => {
     // ID and Export Sync
     onCanvasIdsUpdate,
     onCanvasExportHandlersUpdate,
+    // Theme
+    theme,
   } = props;
 
   const { getAllApplicableFilesInFolder } = useImageFileSrcCommon({
@@ -278,21 +280,41 @@ const CalendarCanvas: FC<Props> = (props) => {
   );
 
   const CalendarMonthHeader = useMemo(() => {
+    const { themeClassName, themeClassNameMinor, themeColor, themeColorMinor } =
+      theme;
     return (
       <h3 className="calendar-header flex items-baseline">
-        <div className="font-serif text-6xl font-semibold text-lime-700">
+        <div
+          className={clsx(
+            'font-serif text-6xl font-semibold',
+            themeClassName || 'text-lime-700',
+          )}
+          style={themeColor ? { color: themeColor } : {}}
+        >
           {monthNames.en.full[month]}
         </div>
-        <div className="ml-4 font-serif text-2xl font-bold text-lime-600">
+        <div
+          className={clsx(
+            'ml-4 font-serif text-2xl font-bold',
+            themeClassNameMinor || 'text-lime-600',
+          )}
+          style={themeColorMinor ? { color: themeColorMinor } : {}}
+        >
           {year}
         </div>
         <div className="w-1 flex-grow" aria-hidden />
-        <div className="font-serif text-xl font-bold text-lime-600">
+        <div
+          className={clsx(
+            'font-serif text-xl font-bold',
+            themeClassNameMinor || 'text-lime-600',
+          )}
+          style={themeColorMinor ? { color: themeColorMinor } : {}}
+        >
           {monthNames.cn.short[month]}
         </div>
       </h3>
     );
-  }, [month, year]);
+  }, [month, theme, year]);
 
   // Canvas is done with absolute position at container side.
   // Tailwind CSS will be ineffective inside.

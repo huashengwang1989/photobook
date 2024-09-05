@@ -24,6 +24,8 @@ type CalendarPageConfig = {
 type BaseFolderList = Record<'calendar' | 'activity', string>;
 
 type MergedConfigs = {
+  themeColor?: string,
+  themeColorMinor?: string,
   exportOptions: ExportOptions,
   baseFolders: BaseFolderList,
   canvasOptions: CanvasOptions,

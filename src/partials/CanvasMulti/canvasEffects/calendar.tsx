@@ -6,6 +6,7 @@ import CanvasCal from '../../CanvasCalendar';
 import { imageFileToDateInfo as imageFileToDateInfoForCal } from '../configs/calendar';
 
 import type {
+  ThemeProps,
   CanvasCalProps,
   CanvasToImageExportOptions,
   CanvasOptions,
@@ -13,6 +14,7 @@ import type {
 } from '../types';
 
 function useCalPages(props: {
+  theme: ThemeProps,
   baseFolder: string,
   ignoredExtensions: string[],
   canvasOptions: CanvasOptions,
@@ -25,6 +27,7 @@ function useCalPages(props: {
     ignoredExtensions,
     canvasOptions,
     calendarConfigs,
+    theme,
   } = props;
 
   const { firstDayOfWeek, specialDays, startYearMonth, endYearMonth } =
@@ -97,6 +100,7 @@ function useCalPages(props: {
 
         const canvasCalProps: CanvasCalProps = {
           ...canvasOptions,
+          theme,
           targetYear: year,
           targetMonth,
           firstColumn: firstDayOfWeek,
@@ -127,6 +131,7 @@ function useCalPages(props: {
     firstDayOfWeek,
     ignoredExtensions,
     specialDays,
+    theme,
     yearMonths,
   ]);
 

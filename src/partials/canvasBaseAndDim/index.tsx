@@ -169,8 +169,13 @@ function useCanvasBaseAndDim(props: Props) {
   // Canvas is done with absolute position.
   // Tailwind CSS will be ineffective inside.
   const renderCanvas = useCallback(
-    (options: { children: ReactNode, key?: string, idAppend?: string }) => {
-      const { idAppend } = options;
+    (options: {
+      children: ReactNode,
+      key?: string,
+      idAppend?: string,
+      overwriteExportUniqueId?: string,
+    }) => {
+      const { idAppend, overwriteExportUniqueId } = options;
       const s = canvasDimensions;
       const padding = s.bleedingPaddings
         .map((n) => (n ? `${n}px` : 0))
@@ -179,9 +184,9 @@ function useCanvasBaseAndDim(props: Props) {
       const wrapperCls = clsx(commonClasses.CANVAS, `relative bg-white`, {
         'shadow-md': !exportingCanvasIds,
       });
-      const canvasId = idAppend
-        ? `${exportUniqueId}-${idAppend}`
-        : exportUniqueId;
+
+      const exportIdPre = overwriteExportUniqueId || exportUniqueId;
+      const canvasId = idAppend ? `${exportIdPre}-${idAppend}` : exportIdPre;
       const CanvasRendered = (
         <div className="relative m-5" id={canvasId} key={options.key}>
           {/** Canvas with bleeding */}

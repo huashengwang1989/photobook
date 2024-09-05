@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import clsx from 'clsx';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChalkboardTeacher } from '@fortawesome/free-solid-svg-icons';
 
@@ -13,11 +14,13 @@ import type { MetaInfoTypeBase as MInfoB } from '../types.config';
 import type { FileInfoWithMeta } from '../types.file';
 
 const MetaPart = <T extends MInfoB = MInfoB>(props: {
+  themeColor?: string,
+  themeClassName?: string,
   metaInfoTypes: T[],
   metaFile: FileInfoWithMeta | null,
   onMetaLoad?: (content: MetaContent<T>) => void,
 }) => {
-  const { onMetaLoad } = props;
+  const { onMetaLoad, themeColor, themeClassName } = props;
   const { getAndParseMetaFileContent } = useMetaFileContent<T>(props);
 
   const { data: metaFileContentParsed } = useFetch({
@@ -49,7 +52,11 @@ const MetaPart = <T extends MInfoB = MInfoB>(props: {
           {/** Title */}
           {cs.title && (
             <h2
-              className="meta-title mb-2 text-xl font-extrabold text-green-800"
+              className={clsx(
+                'meta-title mb-2 text-xl font-extrabold',
+                themeClassName || 'text-green-800',
+              )}
+              style={themeColor ? { color: themeColor } : {}}
               {...getHtml(cs.title)}
             />
           )}
@@ -100,7 +107,7 @@ const MetaPart = <T extends MInfoB = MInfoB>(props: {
         </div>
       </div>
     );
-  }, [metaFileContentParsed, onMetaLoad]);
+  }, [metaFileContentParsed, onMetaLoad, themeClassName, themeColor]);
 
   return MetaPartRendered;
 };

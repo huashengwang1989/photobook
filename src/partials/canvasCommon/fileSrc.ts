@@ -14,7 +14,7 @@ function useImageFileSrcCommon<Meta extends Record<string, unknown>>(
   props: Props<Meta>,
 ) {
   const {
-    folderSrc, // Absolute path only
+    folderSrc: folderSrcFromHookProps, // Absolute path only
     supportedExtensions,
     ignoredExtensions,
     preventRecursiveCheck,
@@ -44,69 +44,73 @@ function useImageFileSrcCommon<Meta extends Record<string, unknown>>(
     );
   }, [supportedExtensions]);
 
-  const getAllApplicableFilesInFolder = useCallback(async () => {
-    if (!folderSrc) {
-      return [];
-    }
+  const getAllApplicableFilesInFolder = useCallback(
+    async (overwriteFolderSrc?: string) => {
+      const folderSrc = overwriteFolderSrc || folderSrcFromHookProps;
+      if (!folderSrc) {
+        return [];
+      }
 
-    const fileEntries = await readDir(folderSrc, {
-      dir: undefined,
-      recursive: !preventRecursiveCheck,
-    });
+      const fileEntries = await readDir(folderSrc, {
+        dir: undefined,
+        recursive: !preventRecursiveCheck,
+      });
 
-    const output = fileEntries.reduce<FileEntryWithMeta<Meta>[]>(
-      (acc, file) => {
-        if (!file.name || !file.path) {
-          return acc;
-        }
-        const ext = getExtensionFromSrc(file.path);
-
-        if (ignoredExtLower.includes(ext)) {
-          return acc;
-        }
-
-        // If checkFileApplicability is not specified,
-        // ignore the check.
-        const isApplicable =
-          !checkFileApplicability || checkFileApplicability(file);
-        if (!isApplicable) {
-          return acc;
-        }
-        // If not specified any, normalisedSupportedExtensions is undefined.
-        // In this case, ignore the file extension check.
-        if (normalisedSupportedExtensions) {
-          const isExtApplicable = normalisedSupportedExtensions[ext];
-          if (!isExtApplicable) {
+      const output = fileEntries.reduce<FileEntryWithMeta<Meta>[]>(
+        (acc, file) => {
+          if (!file.name || !file.path) {
             return acc;
           }
-        }
-        // All checks passed. Let's do some treatment and generate meta.
-        const f = file as Record<'path' | 'name', string>;
-        const meta = customMetaGeneration(f);
-        if (!meta) {
-          // undefined meta is invalid. We cannot categorize it.
+          const ext = getExtensionFromSrc(file.path);
+
+          if (ignoredExtLower.includes(ext)) {
+            return acc;
+          }
+
+          // If checkFileApplicability is not specified,
+          // ignore the check.
+          const isApplicable =
+            !checkFileApplicability || checkFileApplicability(file);
+          if (!isApplicable) {
+            return acc;
+          }
+          // If not specified any, normalisedSupportedExtensions is undefined.
+          // In this case, ignore the file extension check.
+          if (normalisedSupportedExtensions) {
+            const isExtApplicable = normalisedSupportedExtensions[ext];
+            if (!isExtApplicable) {
+              return acc;
+            }
+          }
+          // All checks passed. Let's do some treatment and generate meta.
+          const f = file as Record<'path' | 'name', string>;
+          const meta = customMetaGeneration(f);
+          if (!meta) {
+            // undefined meta is invalid. We cannot categorize it.
+            return acc;
+          }
+          const fileWithMeta: FileEntryWithMeta<Meta> = {
+            ...f,
+            assetUrl: convertFileSrc(file.path),
+            meta,
+          };
+          acc.push(fileWithMeta);
           return acc;
-        }
-        const fileWithMeta: FileEntryWithMeta<Meta> = {
-          ...f,
-          assetUrl: convertFileSrc(file.path),
-          meta,
-        };
-        acc.push(fileWithMeta);
-        return acc;
-      },
-      [],
-    );
-    output.sort((a, b) => a.name.localeCompare(b.name));
-    return output;
-  }, [
-    checkFileApplicability,
-    customMetaGeneration,
-    folderSrc,
-    ignoredExtLower,
-    normalisedSupportedExtensions,
-    preventRecursiveCheck,
-  ]);
+        },
+        [],
+      );
+      output.sort((a, b) => a.name.localeCompare(b.name));
+      return output;
+    },
+    [
+      checkFileApplicability,
+      customMetaGeneration,
+      folderSrcFromHookProps,
+      ignoredExtLower,
+      normalisedSupportedExtensions,
+      preventRecursiveCheck,
+    ],
+  );
 
   const output = useMemo(
     () => ({ getAllApplicableFilesInFolder }),

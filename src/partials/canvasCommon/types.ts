@@ -1,5 +1,12 @@
 import type { FileEntry } from '@tauri-apps/api/fs';
 
+type ThemeProps = {
+  themeColor?: string,
+  themeColorMinor?: string,
+  themeClassName?: string,
+  themeClassNameMinor?: string,
+};
+
 type CommonPropsForImageFiles = {
   folderSrc: string,
   preventRecursiveCheck?: boolean,
@@ -60,6 +67,7 @@ type CanvasToImageExportOptions = {
 };
 
 export type {
+  ThemeProps,
   CommonPropsForImageFiles,
   CommonPropsForImageFilesWithMeta,
   CommonPropsForCanvasSize,

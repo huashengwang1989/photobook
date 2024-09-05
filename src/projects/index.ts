@@ -1,8 +1,8 @@
-import { configs as demoProject } from './demo_project.config';
+import { configs as myProject } from './my_2024_ic.config';
 
 // For future use
-const allProjects = [demoProject];
+const allProjects = [myProject];
 
-const defaultSelectedProject = demoProject;
+const defaultSelectedProject = myProject;
 
 export { allProjects, defaultSelectedProject };

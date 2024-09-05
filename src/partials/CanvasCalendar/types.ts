@@ -6,6 +6,7 @@ import type {
   FileEntry,
   FileEntryWithMeta,
   CanvasToImageExportOptions,
+  ThemeProps,
 } from '../canvasCommon/types';
 
 import type { YyyyMmdd } from '@/types/ts';
@@ -57,6 +58,7 @@ type ImageFileToDateInfo = CustomMetaGeneration<CalendarMeta>;
 
 type Props = CommonPropsForImageFiles &
   CommonPropsForCanvasSize & {
+    theme: ThemeProps,
     imageFileToDateInfo: ImageFileToDateInfo,
     targetYear: number,
     targetMonth: number,
